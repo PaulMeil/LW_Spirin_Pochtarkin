@@ -1,0 +1,103 @@
+﻿@model BackToTheFuture.Models.OutputData
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string','Строка');
+            data.addColumn('number', 'Количество датчиков данного типа для размещения');
+
+            data.addRows([
+                ['Тип 1', @Model.chooses[0]],
+                ['Тип 2', @Model.chooses[1]],
+                ['Тип 3', @Model.chooses[2]],
+                ['Тип 4', @Model.chooses[3]],
+                ['Тип 5', @Model.chooses[4]],
+            ]);
+
+            var options = {
+                title: 'Оптимальное размещение датчиков для мониторинга распределения концентрации газов на земной поверхности',
+                hAxis: {
+                    title: 'Типы датчиков',
+                },
+                vAxis: {
+                    title: 'Количество датчиков'
+                }
+            };
+
+            var chart = new google.visualization.ColumnChart(
+                document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+        }
+    </script>
+    <link rel="stylesheet" href="~/Content/Site.css">
+</head>
+
+<body>
+    <div class="container-custom">
+        <h1>Результаты расчета</h1>
+        <table class="table">
+            <tr>
+                <td class="naming">Нужное количество датчиков 1 типа</td>
+                <td class="naming">Нужное количество датчиков 2 типа</td>
+                <td class="naming">Нужное количество датчиков 3 типа</td>
+                <td class="naming">Нужное количество датчиков 4 типа</td>
+                <td class="naming">Нужное количество датчиков 5 типа</td>
+                <td class="naming">Факт</td>
+            </tr>
+            <tr>
+                <td><input type="text" name="name" class="resultValue" value="@Model.chooses[0]" readonly /></td>
+                <td><input type="text" name="name" class="resultValue" value="@Model.chooses[1]" readonly /></td>
+                <td><input type="text" name="name" class="resultValue" value="@Model.chooses[2]" readonly /></td>
+                <td><input type="text" name="name" class="resultValue" value="@Model.chooses[3]" readonly /></td>
+                <td><input type="text" name="name" class="resultValue" value="@Model.chooses[4]" readonly /></td>
+                <td><input type="text" name="name" class="green" value="@Model.border1" readonly /></td>
+            </tr>
+            <tr>
+                <td class="naming">Непокрытая площадь одного района 1 способом</td>
+                <td class="naming">Непокрытая площадь одного района 2 способом</td>
+                <td class="naming">Непокрытая площадь одного района 3 способом</td>
+                <td class="naming">Непокрытая площадь одного района 4 способом</td>
+                <td class="naming">Непокрытая площадь одного района 5 способом</td>
+                <td><input type="text" name="name" class="green" value="@Model.border2" readonly /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="name" value="@Model.uncoveredArea[0]" /></td>
+                <td><input type="text" name="name" value="@Model.uncoveredArea[1]" /></td>
+                <td><input type="text" name="name" value="@Model.uncoveredArea[2]" /></td>
+                <td><input type="text" name="name" value="@Model.uncoveredArea[3]" /></td>
+                <td><input type="text" name="name" value="@Model.uncoveredArea[4]" /></td>
+                <td><input type="text" name="name" class="green" value="@Model.border3" readonly /></td>
+            </tr>
+            <tr>
+                <td colspan="6" class="naming">Суммарная площадь непокрытости (оптимум)</td>
+            </tr>
+            <tr>
+                <td colspan="6"><input type="text" name="name" class="green" style="font-size: 16px;" value="@Model.totalUncoveredArea" /></td>
+            </tr>
+        </table>
+        <a href="../Home/Index" class="link-primary center-block">Назад</a>
+
+        <div id="chart_div"></div>
+    </div>
+</body>
+
+<script>
+    let values = document.querySelectorAll(".resultValue");
+
+    for (let i = 0; i < values.length; i++) {
+        if (values[i].value == 0) {
+            values[i].classList.add("red")
+        } else {
+            values[i].classList.add("green")
+        }
+    }
+</script>
+
